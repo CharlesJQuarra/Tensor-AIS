@@ -1,0 +1,10 @@
+*.so
+*.o
+*.a
+*.pyc
+*.dep.inc
+*.pdf
+*.aux
+*.dvi
+*.log
+*.properties
