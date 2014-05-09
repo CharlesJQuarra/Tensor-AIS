@@ -5,7 +5,8 @@ os.system('echo "check pkg-config: PKG_CONFIG_PATH=$PKG_CONFIG_PATH"')
 env["ENV"]["PKG_CONFIG_PATH"] = os.environ.get("PKG_CONFIG_PATH")
 env.ParseConfig('pkg-config --cflags --libs boost-1.52')
 env.ParseConfig('pkg-config --cflags --libs symbolic')
-
+env.ParseConfig('pkg-config --cflags --libs gtest')
+env.MergeFlags('-lpthread')
 
 solver_source = "solver/"
 tests = "tests/"
@@ -15,8 +16,10 @@ tests_paths = ['common/', solver_source, tests]
 
 tests_paths.extend(env['CPPPATH'])
 
+
 ccflags = ['-std=c++11']
 ccflags.extend(env['CCFLAGS'])
+
 
 
 testDir = Dir(tests)

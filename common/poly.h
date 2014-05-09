@@ -178,39 +178,19 @@ void BigDataPoly<ValueType, Order, RankX, RankY>::derivative_coeff(BigDataPoly<V
 	diff.arr.clear();
 	auto ff = [&](ValueType v, const int* base, const unsigned int index_of_last_update)->void
 	{
-		std::deque< unsigned int > indices = _IndexFromRangeDebug(base, RankY + Order*RankX);
-		auto free_indices = _IndexFromRangeDebug(base, RankY);
-		auto contract_poly_indices = _IndexFromRangeDebug(base + RankY, Order*RankX);
+		std::deque< unsigned int > indices = _IndexFromRange(base, RankY + Order*RankX);
+		auto free_indices = _IndexFromRange(base, RankY);
+		auto contract_poly_indices = _IndexFromRange(base + RankY, Order*RankX);
 		auto write_indices = indices;
-		
-		std::cout << " BigDataPoly<Order = "<< Order << ", RankX = "<< RankX << ", RankY = "<< RankY <<">::derivative_coeff. Before reordering: "<< std::endl;
-		for (int ii=0; ii < indices.size(); ii++)
-		{
-			std :: cout << indices[ii] << ",";
-		}
-		std::cout << std::endl;
-		std::cout << " free indices: ";
-		for (int ii=0; ii < free_indices.size(); ii++)
-		{
-			std :: cout << free_indices[ii] << ",";
-		}
-		std::cout << std::endl;
-		diff.arr.inspect();
 		
 		float diff_v = diff.arr( std::move(indices) ) + v;
 		diff.arr.assign( std::move(write_indices), diff_v );
-		diff.arr.inspect();
 		for (unsigned int ii = RankX; ii < Order*RankX; ii++)
 		{
 			indices.clear();
 			indices.insert(indices.end(), free_indices.begin(), free_indices.end());
 			auto contract_shifted_indices = contract_poly_indices;
-			std::cout << " contract BEFORE shifted indices: ";
-			for (int ii=0; ii < contract_shifted_indices.size(); ii++)
-			{
-				std :: cout << contract_shifted_indices[ii] << ",";
-			}
-			std::cout << std::endl;
+
 			for (unsigned int shX = 0; shX < RankX; shX++)
 			{
 				unsigned int index_swap = contract_shifted_indices[ii + shX];
@@ -220,23 +200,9 @@ void BigDataPoly<ValueType, Order, RankX, RankY>::derivative_coeff(BigDataPoly<V
 			indices.insert(indices.end(), contract_shifted_indices.begin(), contract_shifted_indices.end());
 			write_indices = indices;
 			
-			std::cout << " BigDataPoly<Order = "<< Order << ", RankX = "<< RankX << ", RankY = "<< RankY <<">::derivative_coeff. AFTER reordering: "<< std::endl;
-			for (int kk=0; kk < indices.size(); kk++)
-			{
-				std :: cout << indices[kk] << ",";
-			}
-			std::cout << std::endl;
-			std::cout << " contract AFTER shifted indices: ";
-			for (int ii=0; ii < contract_shifted_indices.size(); ii++)
-			{
-				std :: cout << contract_shifted_indices[ii] << ",";
-			}
-			std::cout << std::endl;
-			diff.arr.inspect();
 			float diff_v = diff.arr( std::move(indices) );
 			diff_v += v;
 			diff.arr.assign(std::move(write_indices), diff_v);
-			diff.arr.inspect();
 		}
 	};
 	arr.map(ff);

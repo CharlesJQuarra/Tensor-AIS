@@ -84,8 +84,9 @@ struct AlgebraicIterativeSolver
 		system.eval( *current_x_test , y_test);
 		//std::cout << " compute_y_test_delta after: x = ["<< (*current_x_test)( _Index({0}) ) << "," << (*current_x_test)( _Index({1}) ) << "," << (*current_x_test)( _Index({2}) ) << "]" << std::endl;
 		y_test -= y_goal;
-		std::cout << "compute_y_test_delta(): system eval solution: y = ["<< y_test( _Index({0}) ) << "," << y_test( _Index({1}) ) << "," << y_test( _Index({2}) ) << "] , dot^2 =  " << pow( y_test( _Index({0}) ) , 2 ) + pow( y_test( _Index({1}) ) , 2 ) + pow( y_test( _Index({2}) ) , 2) << std::endl;
-		std::cout << "compute_y_test_delta(): system goal: y_goal = ["<< y_goal( _Index({0}) ) << "," << y_goal( _Index({1}) ) << "," << y_goal( _Index({2}) ) << "] " << std::endl;
+		//std::cout << "compute_y_test_delta(): system eval solution: y = ["<< y_test( _Index({0}) ) << "," << y_test( _Index({1}) ) << "," << y_test( _Index({2}) ) << "] , dot^2 =  " << pow( y_test( _Index({0}) ) , 2 ) + pow( y_test( _Index({1}) ) , 2 ) + pow( y_test( _Index({2}) ) , 2) << std::endl;
+		//std::cout << "compute_y_test_delta(): system goal: y_goal = ["<< y_goal( _Index({0}) ) << "," << y_goal( _Index({1}) ) << "," << y_goal( _Index({2}) ) << "] " << std::endl;
+
 		//std::cout << "compute_y_test_delta(): system eval solution minus goal: y( x = " << (*current_x_test)( _Index({0}) ) << "," << (*current_x_test)( _Index({1}) ) << "," << (*current_x_test)( _Index({2}) ) << " ) = ["<< y_test( _Index({0}) ) << "," << y_test( _Index({1}) ) << "," << y_test( _Index({2}) ) << "]  " << std::endl;
 	}
 
@@ -98,8 +99,8 @@ struct AlgebraicIterativeSolver
 		}
 		ValueType local_phi;
 		TensorMergeMap<ValueType, RankY, ValueType, RankY, ValueType, 0> dotProduct(y_test, c_idx, y_test, local_phi);
-		std::cout << "compute_phi: system eval solution: y = ["<< y_test( _Index({0}) ) << "," << y_test( _Index({1}) ) << "," << y_test( _Index({2}) ) << "]" << std::endl;
-		std::cout << "compute_phi: local_phi: " << local_phi << " dot^2 =  " << pow( y_test( _Index({0}) ) , 2 ) + pow( y_test( _Index({1}) ) , 2 ) + pow( y_test( _Index({2}) ) , 2) << std::endl;
+		//std::cout << "compute_phi: system eval solution: y = ["<< y_test( _Index({0}) ) << "," << y_test( _Index({1}) ) << "," << y_test( _Index({2}) ) << "]" << std::endl;
+		//std::cout << "compute_phi: local_phi: " << local_phi << " dot^2 =  " << pow( y_test( _Index({0}) ) , 2 ) + pow( y_test( _Index({1}) ) , 2 ) + pow( y_test( _Index({2}) ) , 2) << std::endl;
 		return local_phi;
 	}
 
@@ -108,8 +109,8 @@ struct AlgebraicIterativeSolver
 		delta_x.clear();
 		typename MD<ValueType, RankY + RankX>::RegArray y_grad_ij(0.0);
 		system_diff.eval( *current_x_test, y_grad_ij);
-		std::cout << "compute_delta_X(): y_grad_ij: " << std::endl;
-		y_grad_ij.inspect();
+		//std::cout << "compute_delta_X(): y_grad_ij: " << std::endl;
+		//y_grad_ij.inspect();
 		ContractedIndexValues_t c_idx;
 		for (int i=0; i< RankY; i++)
 		{
@@ -202,7 +203,7 @@ struct AlgebraicIterativeSolver
 		unsigned int retries = 0;
 		retry:
 		line_search_results.clear();
-		line_search( line_search_results, factor*lowerP , factor , 200 );
+		line_search( line_search_results, factor*lowerP , factor , 8 );
 		//line_search( line_search_results, -factor*lowerP , -factor , 100 );
 		ValueType best_phi = 9e30;
 		ValueType best_alpha = 0.0;
@@ -231,8 +232,8 @@ struct AlgebraicIterativeSolver
 			std::cout << " unable to find a reasonable point. " << std::endl;
 			typename MD<ValueType, RankY + RankX>::RegArray y_grad_ij(0.0);
 			system_diff.eval( *current_x_test, y_grad_ij);
-			std::cout << "y_grad_ij: " << std::endl;
-			y_grad_ij.inspect();
+			//std::cout << "y_grad_ij: " << std::endl;
+			//y_grad_ij.inspect();
 			for (auto it = line_search_results.begin(), it_e = line_search_results.end(); it != it_e ; it++)
 			{
 				std:: cout << " line search update: alpha = " << it->first << " -> phi = " << it->second << std::endl;
