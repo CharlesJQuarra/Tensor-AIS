@@ -28,7 +28,7 @@ SOFTWARE.
 
 #include <vector>
 #include <poly.h>
-#include <tensor_merge_map.h>
+#include <tensor_product_map.h>
 #include <iostream>
 #include <cmath>
 
@@ -98,7 +98,7 @@ struct AlgebraicIterativeSolver
 			c_idx[i] = i;
 		}
 		ValueType local_phi;
-		TensorMergeMap<ValueType, RankY, ValueType, RankY, ValueType, 0> dotProduct(y_test, c_idx, y_test, local_phi);
+		TensorProductMap<ValueType, RankY, ValueType, RankY, ValueType, 0> dotProduct(y_test, c_idx, y_test, local_phi);
 		//std::cout << "compute_phi: system eval solution: y = ["<< y_test( _Index({0}) ) << "," << y_test( _Index({1}) ) << "," << y_test( _Index({2}) ) << "]" << std::endl;
 		//std::cout << "compute_phi: local_phi: " << local_phi << " dot^2 =  " << pow( y_test( _Index({0}) ) , 2 ) + pow( y_test( _Index({1}) ) , 2 ) + pow( y_test( _Index({2}) ) , 2) << std::endl;
 		return local_phi;
@@ -121,10 +121,10 @@ struct AlgebraicIterativeSolver
 			delta_x.clear();
 			typename MD<ValueType, RankY>::RegArray y_blah(0.0);
 			y_blah.assign( _Index({0}), 1.0);
-			TensorMergeMap< ValueType, RankY, ValueType, RankY + RankX, ValueType, RankX> dot( y_blah, c_idx, y_grad_ij, delta_x);
+			TensorProductMap< ValueType, RankY, ValueType, RankY + RankX, ValueType, RankX> dot( y_blah, c_idx, y_grad_ij, delta_x);
 			std::cout << " delta_X WOULD BE::..... delta_x = ["<< delta_x( _Index({0}) ) << "," << delta_x( _Index({1}) ) << "," << delta_x( _Index({2}) ) << "]  " << std::endl;
 		}*/
-		TensorMergeMap< ValueType, RankY, ValueType, RankY + RankX, ValueType, RankX> dot( y_test, c_idx, y_grad_ij, delta_x);
+		TensorProductMap< ValueType, RankY, ValueType, RankY + RankX, ValueType, RankX> dot( y_test, c_idx, y_grad_ij, delta_x);
 	}
 
 	ValueType loop(ValueType alpha)
@@ -136,7 +136,7 @@ struct AlgebraicIterativeSolver
 		double phi = compute_phi();
 		compute_delta_X();
 		ContractedIndexValues_t c_idx;
-		TensorMergeMap< ValueType, 0, ValueType, RankX, ValueType, RankX> scalarMult( 2.0*alpha, c_idx, delta_x, delta_x_2);
+		TensorProductMap< ValueType, 0, ValueType, RankX, ValueType, RankX> scalarMult( 2.0*alpha, c_idx, delta_x, delta_x_2);
 		//std::cout << "delta_x_increment(): delta_x_2 = ["<< delta_x_2( _Index({0}) ) << "," << delta_x_2( _Index({1}) ) << "," << delta_x_2( _Index({2}) ) << "]  " << std::endl;
 			
 		(*current_x_test) -= delta_x_2;
@@ -158,7 +158,7 @@ struct AlgebraicIterativeSolver
 		ContractedIndexValues_t c_idx;
 		while (fabs(alpha) < fabs(alpha_to))
 		{
-			TensorMergeMap< ValueType, 0, ValueType, RankX, ValueType, RankX> scalarMult( 2*alpha, c_idx, delta_x, delta_x_2);
+			TensorProductMap< ValueType, 0, ValueType, RankX, ValueType, RankX> scalarMult( 2*alpha, c_idx, delta_x, delta_x_2);
 			//std::cout << "delta_x_increment(): delta_x_2 = ["<< delta_x_2( _Index({0}) ) << "," << delta_x_2( _Index({1}) ) << "," << delta_x_2( _Index({2}) ) << "]  " << std::endl;
 			(*current_x_test) -= delta_x_2;
 			compute_y_test_delta();
@@ -176,7 +176,7 @@ struct AlgebraicIterativeSolver
 		current = to;
 		current -= from;
 		ContractedIndexValues_t c_idx;
-		TensorMergeMap< ValueType, 0, ValueType, RankX, ValueType, RankX> scalarMult( 1.0/elements, c_idx, current, dist);
+		TensorProductMap< ValueType, 0, ValueType, RankX, ValueType, RankX> scalarMult( 1.0/elements, c_idx, current, dist);
 		current = from;
 		/*
 		std::cout << " line_search_between: to = ["<< to( _Index({0}) ) << "," << to( _Index({1}) ) << "," << to( _Index({2}) ) << "]" << std::endl;
@@ -219,7 +219,7 @@ struct AlgebraicIterativeSolver
 		if (best_phi < 9e30)
 		{
 			ContractedIndexValues_t c_idx;
-			TensorMergeMap< ValueType, 0, ValueType, RankX, ValueType, RankX> scalarMult( 2*best_alpha, c_idx, delta_x, delta_x_2);
+			TensorProductMap< ValueType, 0, ValueType, RankX, ValueType, RankX> scalarMult( 2*best_alpha, c_idx, delta_x, delta_x_2);
 			(*current_x_test) -= delta_x_2;
 			compute_y_test_delta();
 			return best_phi;

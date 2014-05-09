@@ -29,7 +29,6 @@ SOFTWARE.
 #include <solver.h>
 #include <poly.h>
 #include <iostream>
-#include <loader_poly1.h>
 #include <loader_poly2.h>
 
 

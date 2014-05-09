@@ -278,17 +278,6 @@ struct MD
 			// - o -
 		}
 
-		
-		
-		/*
-		template <int N, int... Rest>
-		ValueType entry() 
-		{
-			auto it = dataset.map.find(N);
-			if (it == dataset.map.end())
-				return DefValue;
-			return it->second.entry<Rest...>();
-		}*/
 
 		ValueType operator()(std::deque< unsigned int >&& idxs) const
 		{
@@ -403,7 +392,7 @@ struct MD
 
 		typedef std::pair< unsigned int , unsigned int > index_contraction;
 		template<typename ValueTypeA, unsigned int RankA, typename ValueTypeB, unsigned int RankB, typename ValueTypeP, unsigned int RankP>
-		friend class TensorMergeMap;
+		friend class TensorProductMap;
 
 		template <unsigned int RankOther, unsigned int RankProduct>
 		void mult( const typename MD<ValueType, RankOther>::RegArray& other, typename MD<ValueType, RankProduct>::RegArray& product, const std::vector< index_contraction >& v_idx_contract) const
@@ -664,7 +653,7 @@ struct MD<ValueType, 1>
 		}
 
 		template<typename ValueTypeA, unsigned int RankA, typename ValueTypeB, unsigned int RankB, typename ValueTypeP, unsigned int RankP>
-		friend class TensorMergeMap;
+		friend class TensorProductMap;
 
 		RegArray& operator +=( const RegArray& other)
 		{

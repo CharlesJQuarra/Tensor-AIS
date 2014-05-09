@@ -31,7 +31,7 @@ SOFTWARE.
 
 
 template<typename ValueTypeA, unsigned int RankA, typename ValueTypeB, unsigned int RankB, typename ValueTypeP, unsigned int RankP>
-struct TensorMergeMap
+struct TensorProductMap
 {
 
 	typedef std::pair< unsigned int , unsigned int > index_contraction_t;
@@ -82,7 +82,7 @@ struct TensorMergeMap
 			
 	*/
 
-	TensorMergeMap(const RegArrayA_t& tA, const ContractedIndexValues_t& contracted_indices, const RegArrayB_t& tB, typename MD<ValueTypeP, RankP>::RegArray& tP)
+	TensorProductMap(const RegArrayA_t& tA, const ContractedIndexValues_t& contracted_indices, const RegArrayB_t& tB, typename MD<ValueTypeP, RankP>::RegArray& tP)
 	{
 		//assert that RankA + RankB == RankP - 2*contracted_indices.size()
 		tP.clear();
@@ -136,7 +136,7 @@ struct TensorMergeMap
 
 
 template<typename ValueTypeA, unsigned int RankA, typename ValueTypeB, unsigned int RankB, typename ValueTypeP>
-struct TensorMergeMap<ValueTypeA, RankA, ValueTypeB, RankB, ValueTypeP, 0>
+struct TensorProductMap<ValueTypeA, RankA, ValueTypeB, RankB, ValueTypeP, 0>
 {
 
 	typedef std::pair< unsigned int , unsigned int > index_contraction_t;
@@ -148,7 +148,7 @@ struct TensorMergeMap<ValueTypeA, RankA, ValueTypeB, RankB, ValueTypeP, 0>
 	typedef typename RegArrayB_t::Iterator IteratorB_t;
 	typedef typename RegArrayB_t::DetailIterator DetailIteratorB_t;
 
-	TensorMergeMap(const RegArrayA_t& tA, const ContractedIndexValues_t& contracted_indices, const RegArrayB_t& tB, ValueTypeP& tP)
+	TensorProductMap(const RegArrayA_t& tA, const ContractedIndexValues_t& contracted_indices, const RegArrayB_t& tB, ValueTypeP& tP)
 	{
 		//assert that RankA + RankB == 2*contracted_indices.size()
 		tP = 0.0;
@@ -174,7 +174,7 @@ struct TensorMergeMap<ValueTypeA, RankA, ValueTypeB, RankB, ValueTypeP, 0>
 
 
 template<typename ValueTypeA, typename ValueTypeB, unsigned int RankB, typename ValueTypeP>
-struct TensorMergeMap<ValueTypeA, 0, ValueTypeB, RankB, ValueTypeP, RankB>
+struct TensorProductMap<ValueTypeA, 0, ValueTypeB, RankB, ValueTypeP, RankB>
 {
 
 	typedef typename MD<ValueTypeB, RankB>::RegArray RegArrayB_t;
@@ -183,7 +183,7 @@ struct TensorMergeMap<ValueTypeA, 0, ValueTypeB, RankB, ValueTypeP, RankB>
 	typedef typename RegArrayB_t::DetailIterator DetailIteratorB_t;
 
 
-	TensorMergeMap(const ValueTypeA& tA, const ContractedIndexValues_t& contracted_indices, const RegArrayB_t& tB, typename MD<ValueTypeP, RankB>::RegArray& tP)
+	TensorProductMap(const ValueTypeA& tA, const ContractedIndexValues_t& contracted_indices, const RegArrayB_t& tB, typename MD<ValueTypeP, RankB>::RegArray& tP)
 	{
 		//assert that RankA + RankB == RankP - 2*contracted_indices.size()
 		tP.clear();
