@@ -1,6 +1,6 @@
 
-#ifndef _TENSOR_MERGE_MAP_H_
-#define _TENSOR_MERGE_MAP_H_
+#ifndef _TENSOR_PRODUCT_MAP_H_
+#define _TENSOR_PRODUCT_MAP_H_
 
 /*
 The MIT License (MIT)
